@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const runtime = "nodejs"; // 🔥 IMPORTANT
+export const runtime = "nodejs";
 
 export async function GET() {
   const res = await fetch(
@@ -14,9 +14,10 @@ export async function GET() {
     }
   );
 
-  const data = await res.json();
+  const json = await res.json();
+
   return NextResponse.json({
-    state: data.attributes.current_state,
+    state: json.attributes.current_state, // ✅ FIXED
   });
 }
 
