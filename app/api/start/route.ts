@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 
-export const runtime = "nodejs"; // 🔥 IMPORTANT
+export const runtime = "nodejs";
 
 export async function POST() {
   const res = await fetch(
-    `${process.env.PTERO_PANEL}/api/client/servers/${process.env.PTERO_SERVER_ID}/power`,
+    "https://panel.danbot.host/api/client/servers/dfec9f90/power",
     {
       method: "POST",
       headers: {
