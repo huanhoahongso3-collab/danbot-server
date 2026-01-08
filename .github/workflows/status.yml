@@ -1,0 +1,33 @@
+name: Server Status Check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Query server status
+        run: |
+          echo "Requesting status..."
+          RESPONSE=$(curl -s \
+            -H "Authorization: Bearer ${{ secrets.PANEL_TOKEN }}" \
+            "https://panel.danbot.host/api/client/servers/dfec9f90/resources")
+
+          STATE=$(echo "$RESPONSE" | grep -oP '"current_state":"\K[^"]+')
+          if [ -z "$STATE" ]; then
+            STATE="unknown"
+          fi
+
+          echo "Status: $STATE"
+          echo "STATUS=$STATE" > status.log
+
+      - name: Upload status artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: status.log
+          path: status.log
