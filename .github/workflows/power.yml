@@ -1,0 +1,21 @@
+name: Server Power Control
+
+on:
+  schedule:
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+    inputs:
+      signal:
+        required: true
+        default: "start"
+
+jobs:
+  power:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send power signal to server
+        run: |
+          curl -X POST "https://panel.danbot.host/api/client/servers/dfec9f90/power" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.PANEL_TOKEN }}" \
+            -d "{\"signal\":\"${{ github.event.inputs.signal }}\"}"
