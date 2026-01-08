@@ -13,7 +13,6 @@ jobs:
 
       - name: Query server status
         run: |
-          echo "Requesting status..."
           RESPONSE=$(curl -s \
             -H "Authorization: Bearer ${{ secrets.PANEL_TOKEN }}" \
             "https://panel.danbot.host/api/client/servers/dfec9f90/resources")
@@ -23,8 +22,7 @@ jobs:
             STATE="unknown"
           fi
 
-          echo "Status: $STATE"
-          echo "STATUS=$STATE" > status.log
+          echo "$STATE" > status.log
 
       - name: Upload status artifact
         uses: actions/upload-artifact@v4
